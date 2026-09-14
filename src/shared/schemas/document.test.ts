@@ -49,7 +49,57 @@ describe('stored document schemas', () => {
     expect(isAdrDocument(parsed)).toBe(true)
     if (isAdrDocument(parsed)) {
       expect(parsed.body.alternatives).toEqual([])
+      expect(parsed.body.approvers).toEqual([])
     }
+  })
+
+  it('defaults a missing approvers list on older ADRs', () => {
+    const document = createStoredDocument({
+      type: 'adr',
+      title: 'Choose a broker'
+    })
+    if (!isAdrDocument(document)) {
+      throw new Error('expected ADR')
+    }
+    const result = parseStoredDocument({
+      ...document,
+      body: {
+        context: document.body.context,
+        decision: document.body.decision,
+        consequences: document.body.consequences,
+        alternatives: document.body.alternatives
+      }
+    })
+    expect(isAdrDocument(result)).toBe(true)
+    if (isAdrDocument(result)) {
+      expect(result.body.approvers).toEqual([])
+    }
+  })
+
+  it('renders ADR approvers in markdown', () => {
+    const document = createStoredDocument({
+      type: 'adr',
+      title: 'Choose a broker'
+    })
+    if (!isAdrDocument(document)) {
+      throw new Error('expected ADR')
+    }
+    const parsed = parseStoredDocument({
+      ...document,
+      body: {
+        ...document.body,
+        approvers: [
+          { id: crypto.randomUUID(), name: 'Alex Rivera', kind: 'technical' },
+          { id: crypto.randomUUID(), name: 'Jordan Lee', kind: 'business' }
+        ]
+      }
+    })
+    const markdown = documentToMarkdown(parsed)
+    expect(markdown).toContain('## Approvers')
+    expect(markdown).toContain('Alex Rivera')
+    expect(markdown).toContain('Technical approver')
+    expect(markdown).toContain('Jordan Lee')
+    expect(markdown).toContain('Business approver')
   })
 
   it('rejects unknown fields', () => {

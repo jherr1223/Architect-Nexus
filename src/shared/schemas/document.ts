@@ -113,12 +113,24 @@ export const alternativeSchema = z
   })
   .strict()
 
+export const approverKindSchema = z.enum(['technical', 'business'])
+export type ApproverKind = z.infer<typeof approverKindSchema>
+
+export const approverSchema = z
+  .object({
+    id: uuidId,
+    name: z.string().max(200),
+    kind: approverKindSchema
+  })
+  .strict()
+
 export const adrBodySchema = z
   .object({
     context: z.string().max(20000),
     decision: z.string().max(20000),
     consequences: z.string().max(20000),
-    alternatives: z.array(alternativeSchema).max(20)
+    alternatives: z.array(alternativeSchema).max(20),
+    approvers: z.array(approverSchema).max(50).default([])
   })
   .strict()
 

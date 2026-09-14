@@ -284,6 +284,37 @@ export const adrTemplate: TemplateDefinition = {
       fields: overviewFields
     },
     {
+      id: 'approvers',
+      title: 'Approvers',
+      description: 'Assign one or more technical and business approvers.',
+      base: 'body',
+      fields: [
+        {
+          key: 'approvers',
+          label: 'Approvers',
+          type: 'repeatable',
+          addLabel: 'Add approver',
+          createItem: () => ({
+            id: crypto.randomUUID(),
+            name: '',
+            kind: 'technical'
+          }),
+          itemFields: [
+            { key: 'name', label: 'Name', type: 'text', placeholder: 'Approver name' },
+            {
+              key: 'kind',
+              label: 'Approver type',
+              type: 'select',
+              options: [
+                { value: 'technical', label: 'Technical' },
+                { value: 'business', label: 'Business' }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       id: 'context',
       title: 'Context',
       base: 'body',

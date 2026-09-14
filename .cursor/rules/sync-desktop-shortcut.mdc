@@ -1,0 +1,23 @@
+---
+description: After app changes, rebuild and copy into the installed desktop exe
+alwaysApply: true
+---
+
+# Keep the installed app current
+
+The Desktop/Start shortcut **Solution Arch Organize** launches
+`%LOCALAPPDATA%\Programs\solution-arch-organize\Solution Arch Organize.exe`.
+That copy does not update itself. After any user-visible app change, finish by
+running `.\scripts\sync-desktop-install.ps1` before telling the user it is done.
+
+Do not silently run the NSIS installer. Do not leave the shortcut on `launch.vbs`.
+
+```
+# ❌ BAD — source changed, installed exe still yesterday's build
+# ❌ BAD — only run npm run dev and assume the desktop shortcut matches
+
+# ✅ GOOD
+.\scripts\sync-desktop-install.ps1
+```
+
+Tell the user to fully quit and reopen the shortcut. A running process will not pick up the new files.

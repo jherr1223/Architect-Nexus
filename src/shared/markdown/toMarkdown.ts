@@ -128,6 +128,14 @@ export function documentToMarkdown(document: StoredDocument): string {
       '',
       asMarkdownBlock(body.consequences),
       '',
+      heading('Approvers', 2),
+      '',
+      bullets(body.approvers, (item) => {
+        const name = String(item.name || 'Unnamed')
+        const kind = item.kind === 'business' ? 'Business' : 'Technical'
+        return `- **${name}** — ${kind} approver`
+      }),
+      '',
       heading('Alternatives', 2),
       '',
       bullets(body.alternatives, (item) => {
