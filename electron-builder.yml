@@ -1,0 +1,30 @@
+appId: com.solutionarch.organize
+productName: Solution Arch Organize
+directories:
+  buildResources: build
+  output: release
+files:
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{dev-app-update.yml,CHANGELOG.md,README.md}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+  - '!.tools/*'
+  - '!dev.ps1'
+asar: true
+npmRebuild: false
+win:
+  executableName: Solution Arch Organize
+  artifactName: ${productName}-Setup-${version}.${ext}
+  target:
+    - target: nsis
+      arch:
+        - x64
+nsis:
+  oneClick: true
+  perMachine: false
+  allowElevation: false
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: Solution Arch Organize
+  uninstallDisplayName: Solution Arch Organize
