@@ -29,7 +29,8 @@ export function emptyAdrBody(): AdrBody {
     context: '',
     decision: '',
     consequences: '',
-    alternatives: []
+    alternatives: [],
+    approvers: []
   }
 }
 

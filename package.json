@@ -15,7 +15,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "postinstall": "electron-builder install-app-deps",
-    "build:win": "npm run build && electron-builder --win"
+    "build:win": "npm run build && electron-builder --win",
+    "sync:desktop": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/sync-desktop-install.ps1",
+    "shortcut": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/install-desktop-shortcut.ps1"
   },
   "dependencies": {
     "@electron-toolkit/utils": "4.0.0",

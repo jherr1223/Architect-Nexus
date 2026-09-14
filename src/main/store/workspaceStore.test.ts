@@ -50,9 +50,22 @@ describe('WorkspaceStore', () => {
 
     const updated = await store.save({
       ...loaded,
-      meta: { ...loaded.meta, status: 'approved' }
+      meta: { ...loaded.meta, status: 'approved' },
+      body: {
+        ...loaded.body,
+        approvers: [
+          { id: crypto.randomUUID(), name: 'Alex Rivera', kind: 'technical' },
+          { id: crypto.randomUUID(), name: 'Jordan Lee', kind: 'business' }
+        ]
+      }
     })
     expect(updated.meta.status).toBe('approved')
+    if (!isAdrDocument(updated)) {
+      throw new Error('expected ADR')
+    }
+    expect(updated.body.approvers).toHaveLength(2)
+    expect(updated.body.approvers[0]?.kind).toBe('technical')
+    expect(updated.body.approvers[1]?.kind).toBe('business')
     expect(updated.meta.updatedAt >= loaded.meta.updatedAt).toBe(true)
 
     await store.delete(created.meta.id)
